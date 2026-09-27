@@ -1,10 +1,20 @@
 services:
-  app:
-    build: .
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
-    env_file:
-      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5173
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./:/app:cached
+      # keep node_modules in the container to avoid host/OS differences
+      - node_modules:/app/node_modules
+    command: ["npm", "run", "dev"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  node_modules:

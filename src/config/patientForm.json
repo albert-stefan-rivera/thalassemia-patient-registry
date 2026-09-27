@@ -1,0 +1,253 @@
+{
+  "version": "1.1.0",
+  "title": "Patient Registration & Prior Authorization",
+  "description": "Schema and defaults for PatientForm.jsx. Use this to drive rendering, validation, and exports.",
+  "features": {
+    "pdfImport": {
+      "enabled": true,
+      "label": "Import PDF",
+      "description": "Upload a scanned Prior Authorization PDF to auto-fill form fields",
+      "acceptedFileTypes": ["application/pdf"],
+      "importUtility": "../utils/pdfImport",
+      "position": "top",
+      "mappedFields": [
+        "healthPlan",
+        "healthPlanFax",
+        "name",
+        "dob",
+        "gender",
+        "address",
+        "email",
+        "phoneNumber",
+        "healthInsuranceId",
+        "patientAccountNumber",
+        "principalDiagnosisDescription",
+        "principalDiagnosisICD10"
+      ]
+    },
+    "voiceInput": {
+      "enabled": true,
+      "description": "Voice recognition input for text fields",
+      "supportedFields": ["name", "age", "gender", "address", "email", "phoneNumber", "medicalHistory"]
+    }
+  },
+  "sections": [
+    {
+      "id": "insurance",
+      "title": "Prior Authorization - Insurance",
+      "fields": [
+        { "name": "healthPlan", "label": "Health Plan", "type": "text", "required": false },
+        { "name": "healthPlanFax", "label": "Health Plan Fax #", "type": "text", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" }
+      ]
+    },
+    {
+      "id": "personal",
+      "title": "Personal Information",
+      "fields": [
+        { "name": "name", "label": "Full Name", "type": "text", "required": true },
+        { "name": "age", "label": "Age", "type": "number", "required": true, "min": 1, "max": 150 },
+        { "name": "gender", "label": "Gender", "type": "select", "required": true, "options": [
+          { "label": "Male", "value": "male" },
+          { "label": "Female", "value": "female" },
+          { "label": "Other", "value": "other" },
+          { "label": "Prefer not to say", "value": "prefer-not-to-say" }
+        ] },
+        { "name": "address", "label": "Address", "type": "textarea", "rows": 3, "required": true },
+        { "name": "dob", "label": "Date of Birth", "type": "date", "required": false }
+      ]
+    },
+    {
+      "id": "serviceTypes",
+      "title": "Service Type Requiring Authorization",
+      "fields": [
+        { "name": "serviceTypes", "label": "Service Types", "type": "checkbox-group", "required": false, "options": [
+          "Ambulatory/Outpatient Service",
+          "Surgery/Procedure",
+          "Infusion or Chemotherapy",
+          "Diagnostic",
+          "Home Health",
+          "Infusion Therapy (Home)",
+          "Hospice Care",
+          "Respite Care",
+          "Transportation (Non-emergent)",
+          "Air Ambulance",
+          "Acupuncture",
+          "Chiropractic",
+          "Durable Medical Equipment",
+          "Non-Participating Specialist",
+          "Acute Medical/Surgical",
+          "Long Term Acute Care",
+          "Rehabilitation",
+          "Skilled Nursing Facility",
+          "Adjunctive Dental Services",
+          "Oral Surgery",
+          "Maxillofacial Prosthetics",
+          "Enteral Nutrition",
+          "Parenteral Nutrition",
+          "Total Parenteral Nutrition",
+          "Outpatient Therapy - Occupational",
+          "Outpatient Therapy - Physical",
+          "Outpatient Therapy - Cardio Pulmonary Rehab",
+          "Outpatient Therapy - Speech"
+        ] },
+        { "name": "otherServiceType", "label": "Other — please specify", "type": "text", "required": false }
+      ]
+    },
+    {
+      "id": "providerInformation",
+      "title": "Provider Information",
+      "fields": [
+        { "name": "requestingProviderNameNPI", "label": "Requesting Provider Name and NPI", "type": "text", "required": false },
+        { "name": "requestingProviderPhone", "label": "Requesting Provider Phone", "type": "tel", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "requestingProviderFax", "label": "Requesting Provider Fax", "type": "text", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "servicingProviderNameNPITaxId", "label": "Servicing Provider Name and NPI (and Tax ID if required)", "type": "text", "required": false },
+        { "name": "servicingProviderPhone", "label": "Servicing Provider Phone", "type": "tel", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "servicingProviderFax", "label": "Servicing Provider Fax", "type": "text", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "sameAsRequestingProvider", "label": "Servicing Provider same as Requesting Provider", "type": "checkbox", "required": false },
+        { "name": "servicingFacilityNameNPI", "label": "Servicing Facility Name and NPI", "type": "text", "required": false },
+        { "name": "servicingFacilityPhone", "label": "Servicing Facility Phone", "type": "tel", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "servicingFacilityFax", "label": "Servicing Facility Fax", "type": "text", "required": false, "pattern": "^[-+()\\\\d\\\\s]*$" },
+        { "name": "sameAsRequestingProviderFacility", "label": "Servicing Facility same as Requesting Provider", "type": "checkbox", "required": false },
+        { "name": "contactPerson", "label": "Contact Person", "type": "text", "required": false }
+      ]
+    },
+    {
+      "id": "memberInformation",
+      "title": "Member Information (Prior Authorization)",
+      "fields": [
+        { "name": "healthInsuranceId", "label": "Health Insurance ID#", "type": "text", "required": false },
+        { "name": "patientAccountNumber", "label": "Patient Account/Control Number", "type": "text", "required": false },
+        { "name": "otherInsurance", "label": "Other Insurance (if applicable)", "type": "text", "required": false },
+        { "name": "memberAddress", "label": "Member Address", "type": "text", "required": false }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Contact Information",
+      "fields": [
+        { "name": "email", "label": "Email Address", "type": "email", "required": true, "pattern": "^\\\\S+@\\\\S+\\\\.\\\\S+$" },
+        { "name": "phoneNumber", "label": "Phone Number", "type": "tel", "required": true, "pattern": "^\\\\+?[\\\\d\\\\s\\\\-()]{10,}$" }
+      ]
+    },
+    {
+      "id": "medicalHistory",
+      "title": "Medical History",
+      "fields": [
+        { "name": "medicalHistory", "label": "Medical History (Optional)", "type": "textarea", "rows": 4, "required": false }
+      ]
+    },
+    {
+      "id": "diagnosisProcedure",
+      "title": "Diagnosis / Planned Procedure Information",
+      "fields": [
+        { "name": "principalDiagnosisDescription", "label": "Principal Diagnosis Description", "type": "text", "required": false },
+        { "name": "principalDiagnosisICD10", "label": "ICD-10 Codes", "type": "text", "required": false },
+        { "name": "secondaryDiagnosisDescription", "label": "Secondary Diagnosis Description", "type": "text", "required": false },
+        { "name": "secondaryDiagnosisICD10", "label": "ICD-10 Codes", "type": "text", "required": false },
+        { "name": "principalPlannedProcedureDescriptionCPT", "label": "Principal Planned Procedure (Description and CPT/HCPCS Code)", "type": "text", "required": false },
+        { "name": "principalUnitsNumber", "label": "# of Units (Principal)", "type": "number", "required": false, "min": 0 },
+        { "name": "principalUnitsType", "label": "Units Type (Principal)", "type": "select", "required": false, "options": [
+          { "label": "Hours", "value": "Hours" },
+          { "label": "Days", "value": "Days" },
+          { "label": "Months", "value": "Months" },
+          { "label": "Visits", "value": "Visits" },
+          { "label": "Dosage", "value": "Dosage" }
+        ] },
+        { "name": "secondaryPlannedProcedureDescriptionCPT", "label": "Secondary Planned Procedure (Description and CPT/HCPCS Code)", "type": "text", "required": false },
+        { "name": "secondaryUnitsNumber", "label": "# of Units (Secondary)", "type": "number", "required": false, "min": 0 },
+        { "name": "secondaryUnitsType", "label": "Units Type (Secondary)", "type": "select", "required": false, "options": [
+          { "label": "Hours", "value": "Hours" },
+          { "label": "Days", "value": "Days" },
+          { "label": "Months", "value": "Months" },
+          { "label": "Visits", "value": "Visits" },
+          { "label": "Dosage", "value": "Dosage" }
+        ] },
+        { "name": "serviceStartDate", "label": "Service Start Date", "type": "date", "required": false }
+      ]
+    }
+  ],
+  "defaultValues": {
+    "name": "",
+    "age": "",
+    "gender": "",
+    "address": "",
+    "email": "",
+    "phoneNumber": "",
+    "medicalHistory": "",
+    "healthPlan": "",
+    "healthPlanFax": "",
+    "serviceTypes": [],
+    "otherServiceType": "",
+    "requestingProviderNameNPI": "",
+    "requestingProviderPhone": "",
+    "requestingProviderFax": "",
+    "servicingProviderNameNPITaxId": "",
+    "servicingProviderPhone": "",
+    "servicingProviderFax": "",
+    "sameAsRequestingProvider": false,
+    "servicingFacilityNameNPI": "",
+    "servicingFacilityPhone": "",
+    "servicingFacilityFax": "",
+    "sameAsRequestingProviderFacility": false,
+    "contactPerson": "",
+    "dob": "",
+    "healthInsuranceId": "",
+    "otherInsurance": "",
+    "patientAccountNumber": "",
+    "memberAddress": "",
+    "principalDiagnosisDescription": "",
+    "principalDiagnosisICD10": "",
+    "secondaryDiagnosisDescription": "",
+    "secondaryDiagnosisICD10": "",
+    "principalPlannedProcedureDescriptionCPT": "",
+    "principalUnitsNumber": "",
+    "principalUnitsType": "",
+    "secondaryPlannedProcedureDescriptionCPT": "",
+    "secondaryUnitsNumber": "",
+    "secondaryUnitsType": "",
+    "serviceStartDate": ""
+  },
+  "payloadStructure": {
+    "personalInfo": ["name", "age", "gender", "address"],
+    "contactInfo": ["email", "phoneNumber"],
+    "medicalHistory": "medicalHistory",
+    "priorAuthorization": {
+      "insurance": ["healthPlan", "healthPlanFax"],
+      "serviceTypes": { "selected": "serviceTypes", "other": "otherServiceType" },
+      "providerInformation": [
+        "requestingProviderNameNPI",
+        "requestingProviderPhone",
+        "requestingProviderFax",
+        "servicingProviderNameNPITaxId",
+        "servicingProviderPhone",
+        "servicingProviderFax",
+        "sameAsRequestingProvider",
+        "servicingFacilityNameNPI",
+        "servicingFacilityPhone",
+        "servicingFacilityFax",
+        "sameAsRequestingProviderFacility",
+        "contactPerson"
+      ],
+      "memberInformation": [
+        "dob",
+        "healthInsuranceId",
+        "otherInsurance",
+        "patientAccountNumber",
+        "memberAddress"
+      ],
+      "diagnosisAndProcedure": [
+        "principalDiagnosisDescription",
+        "principalDiagnosisICD10",
+        "secondaryDiagnosisDescription",
+        "secondaryDiagnosisICD10",
+        "principalPlannedProcedureDescriptionCPT",
+        "principalUnitsNumber",
+        "principalUnitsType",
+        "secondaryPlannedProcedureDescriptionCPT",
+        "secondaryUnitsNumber",
+        "secondaryUnitsType",
+        "serviceStartDate"
+      ]
+    }
+  }
+}
